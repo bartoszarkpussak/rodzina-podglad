@@ -148,6 +148,57 @@ section.block>h2 .count{font-weight:500;letter-spacing:0;text-transform:none;col
   .row{grid-template-columns:56px 1fr auto}
 }
 
+/* widoki */
+.views{display:inline-flex;border:1px solid var(--line);border-radius:999px;background:var(--card);padding:3px;gap:2px}
+.views button{border:0;background:transparent;border-radius:999px;padding:6px 14px;color:var(--ink-2);font-weight:600;font-size:13px}
+.views button.on{background:var(--ink);color:var(--bg)}
+.calbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.calbar h2{margin:0;font-size:18px;font-family:"Bricolage Grotesque","Manrope",sans-serif;text-transform:capitalize;flex:1;min-width:160px}
+.calbar .nav{border:1px solid var(--line);background:var(--card);border-radius:999px;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;font-size:16px;color:var(--ink-2)}
+.calbar .nav.txt{width:auto;padding:0 12px;font-size:13px;font-weight:600}
+.cal{display:none}
+.cal.on{display:block}
+.month{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.month .dows{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--line)}
+.month .dows div{padding:8px 6px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);text-align:center}
+.month .cells{display:grid;grid-template-columns:repeat(7,1fr)}
+.cell{min-height:92px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px 6px 8px;cursor:pointer;display:flex;flex-direction:column;gap:3px;min-width:0}
+.cell:nth-child(7n){border-right:0}
+.cell.other{background:color-mix(in srgb,var(--bg) 60%,var(--card));color:var(--ink-3)}
+.cell.other .dn{color:var(--ink-3)}
+.cell.sel{outline:2px solid var(--accent);outline-offset:-2px}
+.cell .dn{font-size:13px;font-weight:600;line-height:1;margin-bottom:3px;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%}
+.cell.today .dn{background:var(--accent);color:#fff}
+.cell.we .dn{color:var(--ink-2)}
+.ev{font-size:11px;line-height:1.25;padding:2px 5px;border-radius:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;border-left:3px solid transparent}
+.ev.termin{background:var(--c-termin-soft);color:var(--c-termin);border-left-color:var(--c-termin)}
+.ev.wyjazd{background:var(--c-wyjazd-soft);color:var(--c-wyjazd);border-left-color:var(--c-wyjazd)}
+.ev.zadanie{background:var(--c-zadanie-soft);color:var(--c-zadanie);border-left-color:var(--c-zadanie)}
+.ev.zajecia{background:var(--c-zajecia-soft);color:var(--c-zajecia);border-left-color:var(--c-zajecia)}
+.ev.tent{border-left-style:dashed;opacity:.85}
+.ev.done{text-decoration:line-through;opacity:.55}
+.ev .t{font-weight:500;opacity:.8;margin-right:3px}
+.more{font-size:11px;color:var(--ink-3);padding-left:5px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+.wday{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:10px 10px 12px;min-height:160px;min-width:0}
+.wday h4{margin:0 0 8px;font-size:13px;display:flex;align-items:baseline;gap:6px}
+.wday h4 .dn{font-size:18px;font-weight:700}
+.wday.today h4 .dn{color:var(--accent)}
+.wday .ev{white-space:normal;margin-bottom:4px;padding:4px 6px}
+.wday .none{font-size:12px;color:var(--ink-3)}
+.daypanel{margin-top:16px}
+@media (max-width:860px){
+  .cell{min-height:64px;padding:4px 3px 6px}
+  .cell .ev{display:none}
+  .cell .dots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+  .cell .dots i{width:6px;height:6px;border-radius:50%;display:block}
+  .cell .more{display:none}
+  .week{grid-template-columns:1fr;gap:8px}
+  .wday{min-height:0}
+  .wday h4{margin-bottom:6px}
+}
+@media (min-width:861px){.cell .dots{display:none}}
+
 .banner{background:var(--accent-soft);color:var(--ink);border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:14px}
 .banner[hidden]{display:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -163,13 +214,18 @@ section.block>h2 .count{font-weight:500;letter-spacing:0;text-transform:none;col
       <h1>Rodzina</h1>
       <div class="today" id="todayLabel"></div>
     </div>
-    <div class="today" style="text-align:right;font-size:13px">Podgląd, stan na 07.09.2026, 15:07<br><span style="color:var(--ink-3)">nowe wpisy: kalendarz „Dom”</span></div>
+    <div class="today" style="text-align:right;font-size:13px">Podgląd, stan na 07.09.2026, 15:37<br><span style="color:var(--ink-3)">nowe wpisy: kalendarz „Dom”</span></div>
   </header>
 
   <div class="banner" id="banner" hidden></div>
   <div class="filters" id="filters"></div>
 
-  <div class="grid">
+  <div class="cal" id="cal">
+    <div class="calbar"><h2 id="calTitle"></h2><button class="nav" onclick="calNav(-1)" aria-label="poprzedni">‹</button><button class="nav txt" onclick="calToday()">Dziś</button><button class="nav" onclick="calNav(1)" aria-label="następny">›</button></div>
+    <div id="calBody"></div>
+    <section class="block daypanel" id="dayPanel" hidden><h2 id="dayTitle"></h2><div id="dayList"></div></section>
+  </div>
+  <div class="grid" id="grid">
     <div>
       <section class="block">
         <h2>Najbliższe 14 dni <span class="count" id="cnt14"></span></h2>
@@ -282,7 +338,7 @@ function render(){
   // filters
   $("#filters").innerHTML=`<button class="chip all ${filter==="all"?"on":""}" onclick="setFilter('all')">Wszyscy</button>`+
     PEOPLE.map(p=>`<button class="chip ${filter===p?"on":""}" onclick="setFilter('${p}')"><span class="av ${p}">${p[0]}</span>${p}</button>`).join("")+
-    `<span class="sep"></span><label class="toggle"><input type="checkbox" ${showDone?"checked":""} onchange="showDone=this.checked;render()"> pokaż zrobione</label>`;
+    `<span class="sep"></span><span class="views">${[["lista","Lista"],["tydzien","Tydzień"],["miesiac","Miesiąc"]].map(([k,v])=>`<button class="${view===k?"on":""}" onclick="setView('${k}')">${v}</button>`).join("")}</span><label class="toggle"><input type="checkbox" ${showDone?"checked":""} onchange="showDone=this.checked;render()"> pokaż zrobione</label>`;
 
   // agenda 14 days
   const occ=occurrences(T,addDays(T,13)).filter(matches);
@@ -321,6 +377,65 @@ function render(){
     return `<div class="task ${t.done?"done":""}"><button class="check ${t.done?"on":""}" onclick="toggleDone('${t.id}')" aria-label="zrobione">${t.done?'<svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2"/></svg>':""}</button><div class="body" onclick="openEdit('${t.id}')"><div class="t">${esc(t.title)}</div><div class="d ${late?"late":""}">${when}${t.note?` · ${esc(t.note)}`:""}</div></div>${avs(t.who)}</div>`;
   }).join(""):`<div class="empty">Wszystko zrobione.</div>`;
   $("#cntTasks").textContent=tasks.filter(t=>!t.done).length||"";
+  renderCal();
+}
+
+
+/* ===== widoki: lista / tydzień / miesiąc ===== */
+let view=(()=>{try{return localStorage.getItem("rodzina.view")||"lista"}catch(e){return "lista"}})();
+let calAnchor=today();      // dowolny dzień w pokazywanym miesiącu/tygodniu
+let selDay=iso(today());
+const MONN=["Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec","Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień"];
+const mondayOf=d=>{const x=new Date(d);x.setHours(0,0,0,0);const wd=(x.getDay()+6)%7;x.setDate(x.getDate()-wd);return x};
+function setView(v){view=v;try{localStorage.setItem("rodzina.view",v)}catch(e){}render()}
+function calNav(n){if(view==="miesiac"){calAnchor=new Date(calAnchor.getFullYear(),calAnchor.getMonth()+n,1)}else{calAnchor=addDays(calAnchor,7*n)}render()}
+function calToday(){calAnchor=today();selDay=iso(today());render()}
+function selectDay(k){selDay=k;const d=parse(k);if(view==="miesiac"&&(d.getMonth()!==calAnchor.getMonth()||d.getFullYear()!==calAnchor.getFullYear()))calAnchor=d;render()}
+function evHtml(o,withTime){
+  const t=withTime&&o.timeFrom?`<span class="t">${o.timeFrom}</span>`:"";
+  const lbl=o.type==="wyjazd"&&o.dayOf?(o.dayOf==="start"?"▸ ":o.dayOf==="end"?"◂ ":"· "):"";
+  return `<div class="ev ${o.type}${o.tentative?" tent":""}${o.done?" done":""}" onclick="event.stopPropagation();openEdit('${o.id}')" title="${esc(o.title)}">${t}${lbl}${esc(o.title)}</div>`;
+}
+function dayItems(occ,k){return (occ.filter(o=>o.date===k)).sort((a,b)=>sortKey(a).localeCompare(sortKey(b)))}
+function renderMonth(){
+  const y=calAnchor.getFullYear(),m=calAnchor.getMonth();
+  const first=new Date(y,m,1),last=new Date(y,m+1,0);
+  const start=mondayOf(first);const end=addDays(mondayOf(last),6);
+  const occ=occurrences(start,end).filter(matches);
+  $("#calTitle").textContent=`${MONN[m]} ${y}`;
+  let cells="";const Ti=iso(today());
+  for(let d=start;d<=end;d=addDays(d,1)){
+    const k=iso(d);const list=dayItems(occ,k);const other=d.getMonth()!==m;const we=d.getDay()===0||d.getDay()===6;
+    const shown=list.slice(0,3);const more=list.length-shown.length;
+    cells+=`<div class="cell${other?" other":""}${k===Ti?" today":""}${we?" we":""}${k===selDay?" sel":""}" onclick="selectDay('${k}')"><span class="dn">${d.getDate()}</span>${shown.map(o=>evHtml(o,false)).join("")}${more>0?`<div class="more">+${more} więcej</div>`:""}<div class="dots">${list.slice(0,6).map(o=>`<i style="background:var(--c-${o.type})"></i>`).join("")}</div></div>`;
+  }
+  $("#calBody").innerHTML=`<div class="month"><div class="dows">${["pon","wt","śr","czw","pt","sob","nd"].map(x=>`<div>${x}</div>`).join("")}</div><div class="cells">${cells}</div></div>`;
+  renderDayPanel(occ);
+}
+function renderWeek(){
+  const start=mondayOf(calAnchor);const end=addDays(start,6);
+  const occ=occurrences(start,end).filter(matches);const Ti=iso(today());
+  const sameM=start.getMonth()===end.getMonth();
+  $("#calTitle").textContent=sameM?`${start.getDate()}–${end.getDate()} ${MON[end.getMonth()]} ${end.getFullYear()}`:`${start.getDate()} ${MON[start.getMonth()]} – ${end.getDate()} ${MON[end.getMonth()]} ${end.getFullYear()}`;
+  let cols="";
+  for(let d=start;d<=end;d=addDays(d,1)){
+    const k=iso(d);const list=dayItems(occ,k);
+    cols+=`<div class="wday${k===Ti?" today":""}"><h4><span class="dn">${d.getDate()}</span><span style="color:var(--ink-3)">${DOW[d.getDay()]}</span></h4>${list.length?list.map(o=>evHtml(o,true)).join(""):`<div class="none">—</div>`}</div>`;
+  }
+  $("#calBody").innerHTML=`<div class="week">${cols}</div>`;
+  $("#dayPanel").hidden=true;
+}
+function renderDayPanel(occ){
+  const list=dayItems(occ,selDay);const d=parse(selDay);
+  $("#dayPanel").hidden=false;
+  $("#dayTitle").textContent=`${DOW[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]}`;
+  $("#dayList").innerHTML=list.length?`<div class="day">${list.map(rowHtml).join("")}</div>`:`<div class="empty">Nic zaplanowanego tego dnia.</div>`;
+}
+function renderCal(){
+  const isList=view==="lista";
+  $("#grid").style.display=isList?"":"none";
+  $("#cal").classList.toggle("on",!isList);
+  if(view==="miesiac")renderMonth();else if(view==="tydzien")renderWeek();
 }
 
 function setFilter(f){filter=f;try{localStorage.setItem("rodzina.filter",f)}catch(e){}render()}

@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Rodzina Pussaków — podgląd</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,700&display=swap">
+<style>
+:root{
+  --bg:#eef0ec; --card:#fbfbf9; --ink:#1b1f1c; --ink-2:#4f5651; --ink-3:#88908a; --line:#dfe3dc;
+  --accent:#2f4fa0; --accent-soft:#e2e7f6;
+  --c-termin:#b0701c; --c-termin-soft:#f7ebd7;
+  --c-wyjazd:#1d7684; --c-wyjazd-soft:#dbf0f2;
+  --c-zadanie:#8a3f6b; --c-zadanie-soft:#f3e3ec;
+  --c-zajecia:#3f8446; --c-zajecia-soft:#e0f0e1;
+  --p-Bartek:#2f4fa0; --p-Natalia:#b1456f; --p-Matylda:#d68a1e; --p-Amelka:#2f8a6d;
+  --danger:#b3261e;
+  --r:14px; --shadow:0 1px 2px rgba(27,31,28,.05), 0 8px 24px -12px rgba(27,31,28,.14);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#151816; --card:#1f2320; --ink:#eef0ea; --ink-2:#b9bfb8; --ink-3:#7f877f; --line:#2f3430;
+    --accent:#8fa4e6; --accent-soft:#25305a; --c-termin:#e0a04a; --c-termin-soft:#3b2c14; --c-wyjazd:#5fc0cf; --c-wyjazd-soft:#123239;
+    --c-zadanie:#d98ab8; --c-zadanie-soft:#3a1f30; --c-zajecia:#7cc784; --c-zajecia-soft:#1b3120; --danger:#f2867e;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6); }
+}
+:root[data-theme="dark"]{ --bg:#151816; --card:#1f2320; --ink:#eef0ea; --ink-2:#b9bfb8; --ink-3:#7f877f; --line:#2f3430;
+    --accent:#8fa4e6; --accent-soft:#25305a; --c-termin:#e0a04a; --c-termin-soft:#3b2c14; --c-wyjazd:#5fc0cf; --c-wyjazd-soft:#123239;
+    --c-zadanie:#d98ab8; --c-zadanie-soft:#3a1f30; --c-zajecia:#7cc784; --c-zajecia-soft:#1b3120; --danger:#f2867e;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6); }
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 "Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 20px 96px}
+
+/* header */
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+header h1{margin:0;font-size:30px;letter-spacing:-.02em;font-weight:700;font-family:"Bricolage Grotesque","Manrope",sans-serif}
+header .today{color:var(--ink-2);margin-top:2px}
+.btn{border:0;font-family:inherit;border-radius:999px;padding:10px 18px;font-weight:600;background:var(--accent);color:#fff;box-shadow:var(--shadow);transition:transform .08s}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.btn.danger{background:transparent;color:var(--danger);border:1px solid var(--danger);box-shadow:none}
+
+/* filters */
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:22px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px 6px 6px;display:inline-flex;align-items:center;gap:8px;color:var(--ink-2);font-weight:500}
+.chip.on{border-color:var(--ink);color:var(--ink)}
+.chip .av{width:22px;height:22px;font-size:11px}
+.chip.all{padding-left:12px}
+.filters .sep{flex:1}
+.toggle{display:inline-flex;align-items:center;gap:6px;color:var(--ink-3);font-size:13px;cursor:pointer;user-select:none}
+
+/* layout */
+.grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:22px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+section.block{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-bottom:22px}
+section.block>h2{margin:0;padding:14px 18px 10px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);font-weight:700;display:flex;align-items:center;justify-content:space-between}
+section.block>h2 .count{font-weight:500;letter-spacing:0;text-transform:none;color:var(--ink-3)}
+.empty{padding:14px 18px 20px;color:var(--ink-3)}
+
+/* day groups */
+.day{padding:6px 18px 8px;border-top:1px solid var(--line)}
+.day:first-of-type{border-top:0}
+.day h3{margin:8px 0 6px;font-size:14px;font-weight:700;display:flex;align-items:baseline;gap:8px}
+.day h3 .dow{color:var(--ink-3);font-weight:500}
+.day.today h3{color:var(--accent)}
+.day.today h3 .dow{color:var(--accent);opacity:.75}
+
+/* item row */
+.row{cursor:default;display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:start;padding:8px 8px;margin:0 -8px;border-radius:10px;cursor:pointer;transition:background .12s}
+.row:hover{background:var(--bg)}
+.row .time{color:var(--ink-2);font-variant-numeric:tabular-nums;font-size:13px;padding-top:2px;white-space:nowrap}
+.row .time.all{color:var(--ink-3)}
+.row .main{min-width:0}
+.row .title{font-weight:600;display:block}
+.row .title .tag{vertical-align:1px;margin-left:4px}
+.row .title .check{display:inline-flex;vertical-align:-4px;margin:0 6px 0 0}
+.row .meta{color:var(--ink-3);font-size:13px;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row.done .title{text-decoration:line-through;color:var(--ink-3);font-weight:500}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;display:inline-block}
+.tag{font-size:11px;font-weight:600;padding:2px 7px;border-radius:6px;letter-spacing:.02em}
+.tag.termin{background:var(--c-termin-soft);color:var(--c-termin)}
+.tag.wyjazd{background:var(--c-wyjazd-soft);color:var(--c-wyjazd)}
+.tag.zadanie{background:var(--c-zadanie-soft);color:var(--c-zadanie)}
+.tag.zajecia{background:var(--c-zajecia-soft);color:var(--c-zajecia)}
+.tag.tent{background:transparent;border:1px dashed var(--ink-3);color:var(--ink-3);font-weight:500}
+.avs{display:flex;align-items:center}
+.av{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;border:2px solid var(--card);margin-left:-6px;flex:none}
+.av:first-child{margin-left:0}
+.av.Bartek{background:var(--p-Bartek)}.av.Natalia{background:var(--p-Natalia)}.av.Matylda{background:var(--p-Matylda)}.av.Amelka{background:var(--p-Amelka)}
+.check{width:20px;height:20px;border-radius:6px;border:2px solid var(--ink-3);display:inline-flex;align-items:center;justify-content:center;flex:none;margin-top:1px;background:transparent}
+.check.on{background:var(--c-zajecia);border-color:var(--c-zajecia);color:#fff}
+.check svg{width:12px;height:12px}
+
+/* trips */
+.trip{padding:12px 18px;border-top:1px solid var(--line);cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.trip:first-of-type{border-top:0}
+.trip:hover{background:var(--bg)}
+.trip .t{font-weight:600}
+.trip .d{color:var(--ink-2);font-size:13px;margin-top:2px}
+.trip .cd{text-align:right;font-variant-numeric:tabular-nums}
+.trip .cd b{display:block;font-size:22px;line-height:1;color:var(--c-wyjazd)}
+.trip .cd span{font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+.trip .avs{margin-top:6px}
+
+/* tasks */
+.task{display:flex;gap:12px;align-items:flex-start;padding:10px 18px;border-top:1px solid var(--line)}
+.task:first-of-type{border-top:0}
+.task .body{flex:1;min-width:0;cursor:pointer}
+.task .t{font-weight:500}
+.task .d{font-size:13px;color:var(--ink-3);margin-top:2px}
+.task.done .t{text-decoration:line-through;color:var(--ink-3)}
+.task .d.late{color:var(--danger);font-weight:600}
+
+/* modal */
+.backdrop{position:fixed;inset:0;background:rgba(20,16,12,.45);display:none;align-items:flex-end;justify-content:center;z-index:10;padding:0}
+.backdrop.open{display:flex}
+@media (min-width:640px){.backdrop{align-items:center;padding:20px}}
+.modal{background:var(--card);width:100%;max-width:560px;border-radius:20px 20px 0 0;padding:22px 22px 26px;max-height:92vh;overflow:auto;box-shadow:0 30px 60px -20px rgba(0,0,0,.4)}
+@media (min-width:640px){.modal{border-radius:20px}}
+.modal h2{margin:0 0 16px;font-size:20px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+.field input[type=text],.field input[type=date],.field input[type=time],.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px;outline:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);background:var(--card)}
+.field textarea{min-height:70px;resize:vertical}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:7px 12px;color:var(--ink-2);font-weight:500}
+.seg button.on{border-color:transparent;color:#fff}
+.seg button.on.termin{background:var(--c-termin)}.seg button.on.wyjazd{background:var(--c-wyjazd)}.seg button.on.zadanie{background:var(--c-zadanie)}.seg button.on.zajecia{background:var(--c-zajecia)}
+.who{display:flex;gap:8px;flex-wrap:wrap}
+.who button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:5px 12px 5px 5px;display:inline-flex;align-items:center;gap:7px;color:var(--ink-2)}
+.who button.on{border-color:var(--ink);color:var(--ink);background:var(--card)}
+.who button .av{width:22px;height:22px;font-size:11px;margin:0}
+.actions{display:flex;gap:10px;justify-content:flex-end;align-items:center;margin-top:8px}
+.actions .spacer{flex:1}
+.hint{font-size:12px;color:var(--ink-3);margin-top:-8px;margin-bottom:12px}
+.status{position:fixed;max-width:90vw;text-align:center;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20}
+.status.show{opacity:1}
+.fab{display:none}
+@media (max-width:640px){
+  header .btn{display:none}
+  .fab{display:flex;position:fixed;right:18px;bottom:22px;width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;border:0;font-size:30px;align-items:center;justify-content:center;box-shadow:0 10px 24px -6px rgba(47,79,160,.55);z-index:5}
+  .row{grid-template-columns:56px 1fr auto}
+}
+
+.banner{background:var(--accent-soft);color:var(--ink);border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:14px}
+.banner[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.gate{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}.gate form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 24px;width:100%;max-width:360px;box-shadow:var(--shadow)}.gate h2{margin:0 0 6px;font-family:"Bricolage Grotesque","Manrope",sans-serif}.gate p{margin:0 0 14px;color:var(--ink-2);font-size:14px}.gate input{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:11px 12px;font-size:16px;outline:none;margin-bottom:12px}.gate input:focus{border-color:var(--accent)}.gate .btn{width:100%}.gate .err{color:var(--danger);font-size:13px;min-height:18px;margin-top:8px}
+</style>
+
+</head>
+<body>
+<div class="gate" id="gate"><form onsubmit="return gateCheck(event)"><h2>Rodzina</h2><p>Podaj hasło rodzinne, żeby zobaczyć plan.</p><input type="password" id="gatePin" autocomplete="current-password" placeholder="hasło" autofocus><button class="btn" type="submit">Wejdź</button><div class="err" id="gateErr"></div></form></div>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Rodzina</h1>
+      <div class="today" id="todayLabel"></div>
+    </div>
+    <div class="today" style="text-align:right;font-size:13px">Podgląd, stan na 07.09.2026, 15:07<br><span style="color:var(--ink-3)">nowe wpisy: kalendarz „Dom”</span></div>
+  </header>
+
+  <div class="banner" id="banner" hidden></div>
+  <div class="filters" id="filters"></div>
+
+  <div class="grid">
+    <div>
+      <section class="block">
+        <h2>Najbliższe 14 dni <span class="count" id="cnt14"></span></h2>
+        <div id="agenda"></div>
+      </section>
+      <section class="block">
+        <h2>Dalej <span class="count" id="cntLater"></span></h2>
+        <div id="later"></div>
+      </section>
+    </div>
+    <div>
+      <section class="block">
+        <h2>Wyjazdy</h2>
+        <div id="trips"></div>
+      </section>
+      <section class="block">
+        <h2>Do zrobienia <span class="count" id="cntTasks"></span></h2>
+        <div id="tasks"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+
+<div class="status" id="status"></div>
+
+
+
+<script>
+const GATE_PIN="rodzina";
+function gateOk(){try{return localStorage.getItem("rodzina.gate")===GATE_PIN}catch(e){return false}}
+function gateCheck(e){e.preventDefault();const v=document.getElementById("gatePin").value.trim();if(v===GATE_PIN){try{localStorage.setItem("rodzina.gate",v)}catch(x){}document.getElementById("gate").remove();return false}document.getElementById("gateErr").textContent="Nie to hasło. Spróbuj jeszcze raz.";return false}
+if(gateOk()){const g=document.getElementById("gate");if(g)g.remove()}
+const PEOPLE=["Bartek","Natalia","Matylda","Amelka"];
+const TYPES={termin:"Termin",wyjazd:"Wyjazd",zajecia:"Zajęcia",zadanie:"Zadanie"};
+const DOW=["niedziela","poniedziałek","wtorek","środa","czwartek","piątek","sobota"];
+const DOWS=["nd","pn","wt","śr","czw","pt","sb"];
+const MON=["stycznia","lutego","marca","kwietnia","maja","czerwca","lipca","sierpnia","września","października","listopada","grudnia"];
+
+let state={items:[],updatedAt:0};
+let filter=(()=>{try{return localStorage.getItem("rodzina.filter")||"all"}catch(e){return "all"}})();
+let showDone=false;
+let editingId=null;
+let formType="termin";
+let formWho=[];
+
+const $=s=>document.querySelector(s);
+const pad=n=>String(n).padStart(2,"0");
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parse=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const diffDays=(a,b)=>Math.round((parse(b)-parse(a))/86400000);
+const fmtShort=s=>{const d=parse(s);return `${d.getDate()} ${MON[d.getMonth()].replace(/a$/,"a")}`};
+const fmtDM=s=>{const d=parse(s);return `${d.getDate()}.${pad(d.getMonth()+1)}`};
+const esc=s=>String(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function status(msg){const s=$("#status");s.textContent=msg;s.classList.add("show");clearTimeout(status._t);status._t=setTimeout(()=>s.classList.remove("show"),1800)}
+
+const EMBEDDED=[{"date": "2026-09-09", "done": false, "endDate": "", "note": "", "place": "", "repeat": "none", "repeatUntil": "", "tentative": false, "timeFrom": "", "timeTo": "", "title": "Ustalić, kto idzie na zebranie u Amelki 10.09 (Bartek w Ostrowcu)", "type": "zadanie", "who": ["Natalia", "Bartek"], "id": "d1"}, {"date": "2026-09-08", "done": false, "endDate": "", "note": "", "place": "", "repeat": "none", "repeatUntil": "", "tentative": false, "timeFrom": "", "timeTo": "", "title": "Dopytać TDS o start lekcji prywatnych Amelki i Practis", "type": "zadanie", "who": ["Bartek"], "id": "d2"}, {"date": "2026-09-20", "done": false, "endDate": "", "note": "", "place": "", "repeat": "none", "repeatUntil": "", "tentative": false, "timeFrom": "", "timeTo": "", "title": "Zgłosić lekcje na szkolenie klubowe latino (27.09)", "type": "zadanie", "who": ["Natalia", "Bartek"], "id": "d3"}, {"date": "2026-10-30", "done": false, "endDate": "", "note": "", "place": "", "repeat": "none", "repeatUntil": "", "tentative": false, "timeFrom": "", "timeTo": "", "title": "Ustalić opiekę nad dziewczynkami 9.11 (Gala WMF vs tańce)", "type": "zadanie", "who": ["Natalia", "Bartek"], "id": "d4"}, {"date": "2026-09-17", "done": false, "endDate": "", "note": "", "place": "", "repeat": "none", "repeatUntil": "", "tentative": false, "timeFrom": "", "timeTo": "", "title": "Spakować się na Zalesie", "type": "zadanie", "who": ["Bartek", "Natalia", "Matylda", "Amelka"], "id": "d5"}, {"date": "2026-09-07", "done": false, "endDate": "", "gcalCalendar": "dom", "gcalId": "_8krjechm6t1j0b9n8kq4ab9k6p0k8b9p8h144ba36os38dhp6gqj2gpg8c", "note": "", "place": "", "repeat": "none", "repeatUntil": "", "source": "gcal", "tentative": false, "timeFrom": "15:00", "timeTo": "16:00", "title": "Test", "type": "termin", "who": ["Natalia"], "id": "gc-_8krjechm6t1j0b9n8kq4ab9k6p0k8b9p8h144ba36os38dhp6gqj2gpg8c"}, {"date": "2026-09-10", "done": false, "endDate": "", "note": "Nakłada się na taniec Amelki 18:00 (Ściegiennego). Bartek tego dnia w Ostrowcu.", "place": "", "repeat": "none", "repeatUntil": "", "tentative": false, "timeFrom": "18:00", "timeTo": "19:00", "title": "Zebranie u Amelki (szkoła)", "type": "termin", "who": ["Amelka", "Natalia"], "id": "t1"}, {"date": "2026-09-26", "done": false, "endDate": "", "note": "", "place": "", "repeat": "none", "repeatUntil": "", "tentative": true, "timeFrom": "", "timeTo": "", "title": "Szkolenie okręgowe — standard (TDS)", "type": "termin", "who": ["Amelka"], "id": "t2"}, {"date": "2026-09-27", "done": false, "endDate": "", "note": "Trzeba zgłosić lekcje.", "place": "", "repeat": "none", "repeatUntil": "", "tentative": true, "timeFrom": "", "timeTo": "", "title": "Szkolenie klubowe — latino (TDS)", "type": "termin", "who": ["Amelka"], "id": "t3"}, {"date": "2026-10-04", "done": false, "endDate": "", "note": "", "place": "", "repeat": "none", "repeatUntil": "", "tentative": true, "timeFrom": "", "timeTo": "", "title": "Szkolenie okręgowe — latino (TDS)", "type": "termin", "who": ["Amelka"], "id": "t4"}, {"date": "2026-11-09", "done": false, "endDate": "", "note": "Kolizja z tańcami dziewczynek tego dnia — kto odbiera?", "place": "", "repeat": "none", "repeatUntil": "", "tentative": false, "timeFrom": "20:00", "timeTo": "", "title": "Gala WMF — Bartek na scenie", "type": "termin", "who": ["Bartek"], "id": "t5"}, {"date": "2026-09-10", "done": false, "endDate": "2026-09-12", "note": "Czw 10.09 wyjazd ok. 11:00, nocleg Ostrowiec. Pt 11.09 Lublin. Sob 12.09 Warszawa (maraton fotograficzny), powrót wieczorem.", "place": "", "repeat": "none", "repeatUntil": "", "tentative": false, "timeFrom": "", "timeTo": "", "title": "Bartek: Ostrowiec (wernisaż) → Lublin (sesja) → Warszawa", "type": "wyjazd", "who": ["Bartek"], "id": "w1"}, {"date": "2026-10-13", "done": false, "endDate": "2026-10-14", "note": "Z kalendarza „Dom\" (wpis Natalii).", "place": "", "repeat": "none", "repeatUntil": "", "tentative": false, "timeFrom": "", "timeTo": "", "title": "Warszawa — 2 dni", "type": "wyjazd", "who": ["Natalia"], "id": "w3"}, {"date": "2026-09-07", "done": false, "endDate": "", "note": "", "place": "ul. Wspólna", "repeat": "weekly", "repeatUntil": "2026-12-18", "tentative": false, "timeFrom": "16:30", "timeTo": "17:30", "title": "Matylda — taniec", "type": "zajecia", "who": ["Matylda"], "id": "z1"}, {"date": "2026-09-07", "done": false, "endDate": "", "note": "", "place": "ul. Wspólna", "repeat": "weekly", "repeatUntil": "2026-12-18", "tentative": false, "timeFrom": "17:30", "timeTo": "19:00", "title": "Amelka — taniec Sport I", "type": "zajecia", "who": ["Amelka"], "id": "z2"}, {"date": "2026-09-09", "done": false, "endDate": "", "note": "Termin wstępny — do potwierdzenia w TDS.", "place": "Practis", "repeat": "weekly", "repeatUntil": "2026-12-18", "tentative": true, "timeFrom": "18:30", "timeTo": "20:30", "title": "Amelka — Practis", "type": "zajecia", "who": ["Amelka"], "id": "z3"}, {"date": "2026-09-10", "done": false, "endDate": "", "note": "", "place": "ul. Ściegiennego", "repeat": "weekly", "repeatUntil": "2026-12-18", "tentative": false, "timeFrom": "18:00", "timeTo": "19:30", "title": "Amelka — taniec Sport I i II", "type": "zajecia", "who": ["Amelka"], "id": "z4"}, {"date": "2026-09-11", "done": false, "endDate": "", "note": "Co 2 tygodnie. Data startu niepotwierdzona.", "place": "ul. Wspólna", "repeat": "biweekly", "repeatUntil": "2026-12-18", "tentative": true, "timeFrom": "18:00", "timeTo": "18:45", "title": "Amelka — lekcja prywatna", "type": "zajecia", "who": ["Amelka"], "id": "z5"}];
+let loaded=true;
+function connect(){state.items=EMBEDDED;render()}
+function dbSet(){}
+function dbDelete(){}
+
+/* expand recurring items into occurrences within [from, to] */
+function occurrences(from,to){
+  const out=[];const T=iso(today());
+  for(const it of state.items){
+    if(it.repeat&&it.repeat!=="none"){
+      const step=it.repeat==="biweekly"?14:7;
+      let d=parse(it.date);const until=it.repeatUntil?parse(it.repeatUntil):addDays(to,1);
+      while(d<=to&&d<=until){ if(d>=from) out.push({...it,date:iso(d),endDate:"",occ:true}); d=addDays(d,step); }
+    }else{
+      const s=parse(it.date), e=it.endDate?parse(it.endDate):s;
+      if(e>=from&&s<=to){
+        if(it.type==="wyjazd"&&it.endDate&&it.endDate!==it.date){
+          // one entry per day of the trip inside window
+          for(let d=s;d<=e;d=addDays(d,1)){ if(d>=from&&d<=to){const k=iso(d);out.push({...it,date:k,dayOf:k===it.date?"start":k===it.endDate?"end":"mid"})} }
+        }else out.push({...it});
+      }
+    }
+  }
+  return out.filter(o=>!(o.type==="zadanie"&&o.done&&!showDone)&&!(o.type==="zajecia"&&o.done));
+}
+const matches=it=>filter==="all"||(it.who||[]).includes(filter);
+const sortKey=o=>(o.timeFrom||"00:00")+o.title;
+
+function avs(who){return `<span class="avs">${(who||[]).map(p=>`<span class="av ${p}" title="${p}">${p[0]}</span>`).join("")}</span>`}
+function tag(o){return `<span class="tag ${o.type}">${TYPES[o.type]}</span>${o.tentative?'<span class="tag tent">wstępnie</span>':""}`}
+function timeCell(o){
+  if(o.type==="wyjazd"&&o.dayOf) return `<div class="time all">${o.dayOf==="start"?"wyjazd":o.dayOf==="end"?"powrót":"w drodze"}</div>`;
+  if(!o.timeFrom) return `<div class="time all">cały dzień</div>`;
+  return `<div class="time">${o.timeFrom}${o.timeTo?`<br><span style="color:var(--ink-3)">–${o.timeTo}</span>`:""}</div>`;
+}
+function rowHtml(o){
+  const meta=[o.place,o.note].filter(Boolean).join(" · ");
+  const done=o.type==="zadanie"?`<button class="check ${o.done?"on":""}" onclick="event.stopPropagation();toggleDone('${o.id}')" aria-label="zrobione">${o.done?'<svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2"/></svg>':""}</button>`:"";
+  return `<div class="row ${o.done?"done":""}" onclick="openEdit('${o.id}')">
+    ${timeCell(o)}
+    <div class="main"><div class="title">${done}${esc(o.title)} ${tag(o)}</div>${meta?`<div class="meta">${esc(meta)}</div>`:""}</div>
+    ${avs(o.who)}
+  </div>`;
+}
+
+function render(){
+  const T=today(), Ti=iso(T);
+  $("#todayLabel").textContent=`${DOW[T.getDay()]}, ${T.getDate()} ${MON[T.getMonth()]} ${T.getFullYear()}`;
+
+  // filters
+  $("#filters").innerHTML=`<button class="chip all ${filter==="all"?"on":""}" onclick="setFilter('all')">Wszyscy</button>`+
+    PEOPLE.map(p=>`<button class="chip ${filter===p?"on":""}" onclick="setFilter('${p}')"><span class="av ${p}">${p[0]}</span>${p}</button>`).join("")+
+    `<span class="sep"></span><label class="toggle"><input type="checkbox" ${showDone?"checked":""} onchange="showDone=this.checked;render()"> pokaż zrobione</label>`;
+
+  // agenda 14 days
+  const occ=occurrences(T,addDays(T,13)).filter(matches);
+  const byDay={};occ.forEach(o=>(byDay[o.date]=byDay[o.date]||[]).push(o));
+  let html="",n=0;
+  for(let i=0;i<14;i++){
+    const k=iso(addDays(T,i));const list=(byDay[k]||[]).sort((a,b)=>sortKey(a).localeCompare(sortKey(b)));
+    if(!list.length&&i>1) continue;
+    const d=parse(k);const label=i===0?"Dziś":i===1?"Jutro":`${d.getDate()} ${MON[d.getMonth()]}`;
+    n+=list.length;
+    html+=`<div class="day ${i===0?"today":""}"><h3>${label} <span class="dow">${DOW[d.getDay()]}${i<2?`, ${d.getDate()} ${MON[d.getMonth()]}`:""}</span></h3>${list.length?list.map(rowHtml).join(""):`<div class="empty" style="padding:2px 0 8px">nic zaplanowanego</div>`}</div>`;
+  }
+  $("#agenda").innerHTML=html||(loaded?`<div class="empty">Nic w najbliższych dwóch tygodniach.</div>`:`<div class="empty">Łączę z bazą…</div>`);
+  $("#cnt14").textContent=n?`${n}`:"";
+
+  // later: 15–90 days, no zajecia (they're recurring noise), no trips (they have own block)
+  const later=occurrences(addDays(T,14),addDays(T,120)).filter(matches).filter(o=>o.type!=="zajecia"&&o.type!=="wyjazd").sort((a,b)=>a.date.localeCompare(b.date)||sortKey(a).localeCompare(sortKey(b)));
+  const byDay2={};later.forEach(o=>(byDay2[o.date]=byDay2[o.date]||[]).push(o));
+  $("#later").innerHTML=Object.keys(byDay2).length?Object.keys(byDay2).sort().map(k=>{const d=parse(k);return `<div class="day"><h3>${d.getDate()} ${MON[d.getMonth()]} <span class="dow">${DOW[d.getDay()]}</span></h3>${byDay2[k].map(rowHtml).join("")}</div>`}).join(""):`<div class="empty">Nic dalej niż dwa tygodnie.</div>`;
+  $("#cntLater").textContent=later.length?`${later.length}`:"";
+
+  // trips
+  const trips=state.items.filter(i=>i.type==="wyjazd"&&matches(i)&&(i.endDate||i.date)>=Ti).sort((a,b)=>a.date.localeCompare(b.date));
+  $("#trips").innerHTML=trips.length?trips.map(t=>{
+    const dd=diffDays(Ti,t.date);const end=t.endDate||t.date;const ongoing=dd<=0;
+    const range=t.endDate&&t.endDate!==t.date?`${fmtDM(t.date)} – ${fmtDM(t.endDate)} (${diffDays(t.date,t.endDate)+1} dni)`:fmtDM(t.date);
+    const cd=ongoing?`<b>teraz</b><span>do ${fmtDM(end)}</span>`:`<b>${dd}</b><span>${dd===1?"dzień":"dni"}</span>`;
+    return `<div class="trip" onclick="openEdit('${t.id}')"><div><div class="t">${esc(t.title)} ${t.tentative?'<span class="tag tent">wstępnie</span>':""}</div><div class="d">${range}${t.place?` · ${esc(t.place)}`:""}</div>${avs(t.who)}</div><div class="cd">${cd}</div></div>`;
+  }).join(""):`<div class="empty">Żadnych wyjazdów w planie.</div>`;
+
+  // tasks
+  const tasks=state.items.filter(i=>i.type==="zadanie"&&matches(i)&&(showDone||!i.done)).sort((a,b)=>(a.done-b.done)||a.date.localeCompare(b.date));
+  $("#tasks").innerHTML=tasks.length?tasks.map(t=>{
+    const dd=diffDays(Ti,t.date);const late=!t.done&&dd<0;
+    const when=dd===0?"dziś":dd===1?"jutro":dd<0?`po terminie (${fmtDM(t.date)})`:dd<=7?`${DOWS[parse(t.date).getDay()]} ${fmtDM(t.date)}`:fmtDM(t.date);
+    return `<div class="task ${t.done?"done":""}"><button class="check ${t.done?"on":""}" onclick="toggleDone('${t.id}')" aria-label="zrobione">${t.done?'<svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-6" fill="none" stroke="currentColor" stroke-width="2"/></svg>':""}</button><div class="body" onclick="openEdit('${t.id}')"><div class="t">${esc(t.title)}</div><div class="d ${late?"late":""}">${when}${t.note?` · ${esc(t.note)}`:""}</div></div>${avs(t.who)}</div>`;
+  }).join(""):`<div class="empty">Wszystko zrobione.</div>`;
+  $("#cntTasks").textContent=tasks.filter(t=>!t.done).length||"";
+}
+
+function setFilter(f){filter=f;try{localStorage.setItem("rodzina.filter",f)}catch(e){}render()}
+function toggleDone(){status("Odhaczanie tylko w wersji Bartka")}
+
+/* modal */
+function setType(t){formType=t;document.querySelectorAll("#typeSeg button").forEach(b=>b.className=b.dataset.t===t?"on "+t:"");
+  $("#endWrap").style.display=t==="wyjazd"?"":"none";
+  $("#timeWrap").style.display=t==="wyjazd"?"none":"";
+  $("#repeatWrap").style.display=(t==="zajecia"||t==="termin")?"":"none";
+  $("#lblDate").textContent=t==="zadanie"?"Termin":t==="wyjazd"?"Od":"Data";
+  $("#fTitle").placeholder={termin:"np. Dentysta Matyldy",wyjazd:"np. Weekend u dziadków",zajecia:"np. Amelka — basen",zadanie:"np. Zapisać Matyldę na obóz"}[t];
+}
+function setWho(p){formWho=formWho.includes(p)?formWho.filter(x=>x!==p):[...formWho,p];document.querySelectorAll("#whoSeg button").forEach(b=>b.classList.toggle("on",formWho.includes(b.dataset.p)))}
+function buildSegs(){
+  $("#typeSeg").innerHTML=Object.entries(TYPES).map(([k,v])=>`<button type="button" data-t="${k}" onclick="setType('${k}')">${v}</button>`).join("");
+  $("#whoSeg").innerHTML=PEOPLE.map(p=>`<button type="button" data-p="${p}" onclick="setWho('${p}')"><span class="av ${p}">${p[0]}</span>${p}</button>`).join("");
+}
+function openNew(){return;editingId=null;$("#formTitle").textContent="Nowa pozycja";$("#btnDelete").style.display="none";
+  $("#fTitle").value="";$("#fDate").value=iso(today());$("#fEnd").value="";$("#fFrom").value="";$("#fTo").value="";$("#fRepeat").value="none";$("#fUntil").value="";$("#fPlace").value="";$("#fNote").value="";$("#fTent").checked=false;
+  formWho=filter==="all"?[]:[filter];document.querySelectorAll("#whoSeg button").forEach(b=>b.classList.toggle("on",formWho.includes(b.dataset.p)));
+  setType("termin");$("#backdrop").classList.add("open");setTimeout(()=>$("#fTitle").focus(),50)}
+function openEdit(id){return;const it=state.items.find(i=>i.id===id);if(!it)return;editingId=id;$("#formTitle").textContent="Edycja";$("#btnDelete").style.display="";
+  $("#fTitle").value=it.title;$("#fDate").value=it.date;$("#fEnd").value=it.endDate||"";$("#fFrom").value=it.timeFrom||"";$("#fTo").value=it.timeTo||"";$("#fRepeat").value=it.repeat||"none";$("#fUntil").value=it.repeatUntil||"";$("#fPlace").value=it.place||"";$("#fNote").value=it.note||"";$("#fTent").checked=!!it.tentative;
+  formWho=[...(it.who||[])];document.querySelectorAll("#whoSeg button").forEach(b=>b.classList.toggle("on",formWho.includes(b.dataset.p)));
+  setType(it.type);$("#backdrop").classList.add("open")}
+function closeModal(){$("#backdrop").classList.remove("open")}
+function saveItem(e){e.preventDefault();
+  const obj={id:editingId||("i"+Date.now().toString(36)),title:$("#fTitle").value.trim(),type:formType,who:formWho,date:$("#fDate").value,
+    endDate:formType==="wyjazd"?$("#fEnd").value:"",timeFrom:formType==="wyjazd"?"":$("#fFrom").value,timeTo:formType==="wyjazd"?"":$("#fTo").value,
+    repeat:(formType==="zajecia"||formType==="termin")?$("#fRepeat").value:"none",repeatUntil:$("#fUntil").value,place:$("#fPlace").value.trim(),note:$("#fNote").value.trim(),
+    tentative:$("#fTent").checked,done:false};
+  if(obj.endDate&&obj.endDate<obj.date)obj.endDate=obj.date;
+  if(editingId){const i=state.items.findIndex(x=>x.id===editingId);obj.done=state.items[i].done;state.items[i]=obj}else state.items.push(obj);
+  closeModal();render();dbSet(obj)}
+function deleteItem(){if(!editingId)return;const b=$("#btnDelete");if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Na pewno usunąć?";setTimeout(()=>{b.dataset.armed="";b.textContent="Usuń"},4000);return}b.dataset.armed="";b.textContent="Usuń";const id=editingId;state.items=state.items.filter(i=>i.id!==id);closeModal();render();dbDelete(id)}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+render();connect();
+</script>
+
+</body>
+</html>

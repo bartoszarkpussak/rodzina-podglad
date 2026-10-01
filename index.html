@@ -201,6 +201,45 @@ section.block>h2 .count{font-weight:500;letter-spacing:0;text-transform:none;col
 
 .banner{background:var(--accent-soft);color:var(--ink);border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:14px}
 .banner[hidden]{display:none}
+
+/* ===== zakładki + plan lekcji ===== */
+.tabs{display:flex;gap:6px;margin:0 0 14px}
+.tabs button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px;color:var(--ink-2);font-weight:600}
+.tabs button.on{background:var(--accent);border-color:transparent;color:#fff}
+.plan{display:none}
+.plan h2{margin:0 0 4px;font-family:"Bricolage Grotesque","Manrope",sans-serif;font-size:20px}
+.plan .sub{color:var(--ink-3);font-size:13px;margin-bottom:12px}
+.ptab{display:grid;grid-template-columns:76px repeat(5,minmax(0,1fr));gap:6px}
+.ptab .h{font-weight:700;font-size:13px;color:var(--ink-2);padding:6px 4px;text-align:center}
+.ptab .h.now{color:var(--accent)}
+.ptab .hr{font-size:12px;color:var(--ink-3);display:flex;flex-direction:column;justify-content:center;line-height:1.25}
+.ptab .hr b{color:var(--ink-2);font-size:14px}
+.ptab .c{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 8px;min-height:62px;box-shadow:var(--shadow)}
+.ptab .c .n{font-weight:700;font-size:14px}
+.ptab .c .m{font-size:11.5px;color:var(--ink-3);line-height:1.3;margin-top:2px}
+.ptab .c.empty{background:transparent;border:1px dashed var(--line);box-shadow:none}
+.ptab .c.free{background:transparent;border:1px dashed var(--line);box-shadow:none;color:var(--ink-3);font-size:12px;display:flex;align-items:center}
+.ptab .c.col{border-color:var(--accent)}
+.ptab .c.nowl{background:var(--accent-soft);border-color:var(--accent)}
+.ptab .c.info{border-style:dashed;opacity:.9}
+.plegend{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:4px 16px;font-size:13px;color:var(--ink-2)}
+.plegend b{display:inline-block;min-width:44px;color:var(--ink)}
+@media (max-width:720px){
+  .ptab{grid-template-columns:1fr}
+  .ptab .h.corner,.ptab .hr{display:none}
+  .pday{margin-bottom:14px}
+}
+.pmob{display:none}
+@media (max-width:720px){.ptab{display:none}.pmob{display:block}}
+.pday{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px;box-shadow:var(--shadow)}
+.pday.today{border-color:var(--accent)}
+.pday h3{margin:0 0 6px;font-size:15px}
+.pl{display:grid;grid-template-columns:46px 1fr auto;gap:8px;padding:5px 0;border-top:1px solid var(--line);font-size:14px;align-items:baseline}
+.pl:first-of-type{border-top:0}
+.pl .t{color:var(--ink-3);font-size:12px}
+.pl .r{color:var(--ink-3);font-size:12px}
+.pl.nowl{background:var(--accent-soft);border-radius:8px;margin:0 -6px;padding:5px 6px}
+.pl .tn{display:block;color:var(--ink-3);font-size:12px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 .gate{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}.gate form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 24px;width:100%;max-width:360px;box-shadow:var(--shadow)}.gate h2{margin:0 0 6px;font-family:"Bricolage Grotesque","Manrope",sans-serif}.gate p{margin:0 0 14px;color:var(--ink-2);font-size:14px}.gate input{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:11px 12px;font-size:16px;outline:none;margin-bottom:12px}.gate input:focus{border-color:var(--accent)}.gate .btn{width:100%}.gate .err{color:var(--danger);font-size:13px;min-height:18px;margin-top:8px}
 </style>
@@ -214,10 +253,12 @@ section.block>h2 .count{font-weight:500;letter-spacing:0;text-transform:none;col
       <h1>Rodzina</h1>
       <div class="today" id="todayLabel"></div>
     </div>
-    <div class="today" style="text-align:right;font-size:13px">Podgląd, stan na 20.09.2026, 23:35<br><span style="color:var(--ink-3)">nowe wpisy: kalendarz „Dom”</span></div>
+    <div class="today" style="text-align:right;font-size:13px">Podgląd, stan na 01.10.2026, 10:56<br><span style="color:var(--ink-3)">nowe wpisy: kalendarz „Dom”</span></div>
   </header>
 
   <div class="banner" id="banner" hidden></div>
+  <div class="tabs" id="tabs"><button id="tabBtnCal" onclick="setTab('kal')">Kalendarz</button><button id="tabBtnPlan" onclick="setTab('plan')">Plan lekcji Amelki</button></div>
+  <div id="tabCal">
   <div class="filters" id="filters"></div>
 
   <div class="cal" id="cal">
@@ -247,6 +288,8 @@ section.block>h2 .count{font-weight:500;letter-spacing:0;text-transform:none;col
       </section>
     </div>
   </div>
+  </div>
+  <div class="plan" id="tabPlan"></div>
 </div>
 
 
@@ -474,7 +517,51 @@ function saveItem(e){e.preventDefault();
 function deleteItem(){if(!editingId)return;const b=$("#btnDelete");if(b.dataset.armed!=="1"){b.dataset.armed="1";b.textContent="Na pewno usunąć?";setTimeout(()=>{b.dataset.armed="";b.textContent="Usuń"},4000);return}b.dataset.armed="";b.textContent="Usuń";const id=editingId;state.items=state.items.filter(i=>i.id!==id);closeModal();render();dbDelete(id)}
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
 
-render();connect();
+
+/* ===== plan lekcji Amelki (5a, SP 10 Poznań; plan z 03.09.2026, grupa 2) ===== */
+const LESSON_TIMES={1:["8:00","8:45"],2:["8:55","9:40"],3:["9:55","10:40"],4:["10:50","11:35"],5:["11:50","12:35"],6:["12:50","13:35"],7:["13:45","14:30"]};
+const SUBJ={T:"Technika",Mat:"Matematyka",Jp:"Język polski",Gw:"Godzina wychowawcza",I:"Informatyka (gr. 2)",Ja:"Język angielski",M:"Muzyka",G:"Geografia",Gddd:"Godzina do dyspozycji dyrektora",Wf:"WF",H:"Historia",B:"Biologia",Ez:"Edukacja zdrowotna",Pl:"Plastyka",Rel:"Religia"};
+const PLAN={
+  1:{4:["T","305",""],5:["Mat","208",""],6:["Jp","113",""],7:["Gw","208",""]},
+  2:{2:["Mat","208",""],3:["Ja","305",""],4:["Jp","113",""],5:["M","111",""],6:["G","112",""],7:["Gddd","303",""]},
+  3:{1:["Wf","hala BM",""],2:["Wf","hala BM",""],3:["Jp","113",""],4:["H","208",""],5:["B","304",""],6:["Ja","305",""]},
+  4:{1:["Ez","206",""],2:["Mat","208",""],3:["Jp","113",""],4:["Jp","113",""],5:["Wf","SM",""],6:["Wf","SM",""],7:["Rel","208",""]},
+  5:{1:["H","208",""],2:["Ja","305",""],3:["Mat","208",""],4:["Pl","111",""],5:["I","204","RK"]}
+};
+const PLAN_FULL=false; // lustro publiczne: build-podglad.py ustawia false (bez nauczycieli i adresu szkoły)
+const PDAYS=[[1,"Poniedziałek"],[2,"Wtorek"],[3,"Środa"],[4,"Czwartek"],[5,"Piątek"]];
+let tab=(()=>{try{return localStorage.getItem("rodzina.tab")||"kal"}catch(e){return "kal"}})();
+function setTab(t){tab=t;try{localStorage.setItem("rodzina.tab",t)}catch(e){}applyTab()}
+function mm(t){const[a,b]=t.split(":").map(Number);return a*60+b}
+function nowLesson(){const n=new Date(),d=n.getDay(),m=n.getHours()*60+n.getMinutes();for(const l in LESSON_TIMES){if(m>=mm(LESSON_TIMES[l][0])&&m<=mm(LESSON_TIMES[l][1]))return {d,l:+l}}return {d,l:0}}
+function renderPlan(){
+  const tch=x=>PLAN_FULL?x[2]:"";
+  const nl=nowLesson(),td=new Date().getDay();
+  const grid=[`<div class="h corner"></div>`+PDAYS.map(([d,n])=>`<div class="h ${d===td?"now":""}">${n}</div>`).join("")];
+  for(let l=1;l<=7;l++){
+    let row=`<div class="hr"><b>${l}</b>${LESSON_TIMES[l][0]}–${LESSON_TIMES[l][1]}</div>`;
+    PDAYS.forEach(([d])=>{const x=PLAN[d][l];
+      if(!x){row+=`<div class="c empty"></div>`;return}
+      const cls=(d===td?" col":"")+(nl.d===d&&nl.l===l?" nowl":"");
+      row+=`<div class="c${cls}"><div class="n">${SUBJ[x[0]]||x[0]}</div><div class="m">sala ${esc(x[1])}${tch(x)?" · "+esc(tch(x)):""}</div></div>`});
+    grid.push(row)}
+  const mob=PDAYS.map(([d,n])=>{
+    const ls=Object.keys(PLAN[d]).map(Number).sort((a,b)=>a-b);
+    return `<div class="pday ${d===td?"today":""}"><h3>${n} <span class="dow" style="color:var(--ink-3);font-weight:500;font-size:12px">${LESSON_TIMES[ls[0]][0]}–${LESSON_TIMES[ls[ls.length-1]][1]}</span></h3>`+
+      ls.map(l=>{const x=PLAN[d][l];return `<div class="pl ${nl.d===d&&nl.l===l?"nowl":""}"><span class="t">${LESSON_TIMES[l][0]}</span><span>${SUBJ[x[0]]||x[0]}${tch(x)?`<span class="tn">${esc(tch(x))}</span>`:""}</span><span class="r">${esc(x[1])}</span></div>`}).join("")+`</div>`}).join("");
+  const legend=Object.entries(SUBJ).map(([k,v])=>`<div><b>${k}</b>${v}</div>`).join("");
+  $("#tabPlan").innerHTML=`<h2>Plan lekcji — Amelka, klasa 5a</h2><div class="sub">${PLAN_FULL?'':''}plan z 03.09.2026 · Amelka w grupie 2 (informatyka w piątki, 5. lekcja 11:50)</div><div class="ptab">${grid.join("")}</div><div class="pmob">${mob}</div><div class="plegend">${legend}</div>`;
+}
+function applyTab(){
+  const p=tab==="plan";
+  $("#tabCal").style.display=p?"none":"";
+  $("#tabPlan").style.display=p?"block":"none";
+  $("#tabBtnCal").classList.toggle("on",!p);$("#tabBtnPlan").classList.toggle("on",p);
+  document.querySelectorAll(".fab").forEach(f=>f.style.display=p?"none":"");
+  if(p)renderPlan();
+}
+
+buildSegs();render();applyTab();connect();
 </script>
 
 </body>
